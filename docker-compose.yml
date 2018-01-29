@@ -1,0 +1,14 @@
+version: "3.2"
+
+services:
+    web:
+        build: .
+        ports:
+            - "3000:3000"
+            - "3001:3001"
+        volumes:
+            - type: bind
+              source: ./
+              target: /home/node/code
+        stdin_open: true
+        tty: true
