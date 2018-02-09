@@ -8,8 +8,10 @@ let gulp = require('gulp'),
     autoprefixer = require('autoprefixer'),
     postcss = require('gulp-postcss'),
     cssnano = require('cssnano'),
-    sasslint = require('gulp-sass-lint'),
+    stylelint = require('gulp-stylelint'),
     sourcemaps = require('gulp-sourcemaps'),
+    modernizr = require('gulp-modernizr'),
+    uglify = require('gulp-uglify'),
     webpack = require('webpack'),
     UglifyjsPlugin = require('uglifyjs-webpack-plugin'),
     eslint = require('gulp-eslint'),
@@ -100,10 +102,12 @@ const lintSass = () => {
     return gulp.src([
         paths.devScss + '**/*.scss'
     ])
-        .pipe(sasslint({
-            configFile: '.sass-lint.yml'
-        }))
-        .pipe(sasslint.format());
+        .pipe(stylelint({
+            failAfterError: false,
+            reporters: [
+                {formatter: 'string', console: true}
+            ]
+        }));
 };
 
 const buildJs = (done) => {
@@ -202,9 +206,26 @@ const buildPages = () => {
         .pipe(gulp.dest(paths.build));
 };
 
+const buildModernizr = () => {
+    return gulp.src([paths.devJs + '**/*.js', paths.devScss + '**/*.scss'])
+        .pipe(modernizr('modernizr-custom.js', {
+            options : [
+                'setClasses',
+                'addTest',
+                'html5printshiv',
+                'testProp',
+                'fnBind'
+            ],
+            excludeTests: ['hidden']
+        }))
+        .pipe(uglify())
+        .pipe(gulp.dest(paths.buildJs))
+};
+
 const build = gulp.series(cleanBuild, gulp.parallel(
     copyAssets,
     copyPages,
+    buildModernizr,
     buildPages,
     buildSass,
     buildJs,
@@ -216,7 +237,7 @@ const watch = gulp.series(build, () => {
     startServer();
 
     gulp.watch([paths.devJs + '**/*.js'], lintJs);
-    gulp.watch([paths.devPages + '*.njk'], gulp.series(buildPages, reload));
+    gulp.watch([paths.devPages + '**/*.njk'], gulp.series(buildPages, reload));
     gulp.watch([paths.devScss + '**/*.scss'], gulp.parallel(buildSass, lintSass));
     gulp.watch([paths.devAssets + '**/*.*'], gulp.series(copyAssets, reload));
 });
