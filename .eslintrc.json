@@ -2,8 +2,7 @@
     "parserOptions": {
         "ecmaVersion": 8,
         "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
+            "experimentalObjectRestSpread": true
         },
         "sourceType": "module"
     },
@@ -14,11 +13,7 @@
     },
     "globals": {
         "document": false,
-        "window": false,
-        "audiocontext": false,
-        "requestAnimationFrame": false,
-        "cancelAnimationFrame": false,
-        "fetch": false
+        "window": false
     },
     "rules": {
         "arrow-spacing": [
