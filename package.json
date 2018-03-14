@@ -4,7 +4,7 @@
   "description": "A very basic frontend setup.",
   "scripts": {
     "start": "gulp",
-    "build": "gulp build"
+    "build": "npm install && gulp build"
   },
   "author": "Diego Morales",
   "license": "ISC",
