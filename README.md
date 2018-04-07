@@ -8,9 +8,11 @@ You can use this setup as a starting point for your project.
 
 - Setup runs in an docker image.
 - Uses gulp and webpack
-- Linting for JS and SCSS (with slighlty opinionated rules)
+- Styles in PostCSS with [precss](https://github.com/jonathantneal/precss) plugin
+- Eslint with [standardJs](https://standardjs.com/)
+- Stylelint with [standard config](https://github.com/stylelint/stylelint-config-standard)
 - browser-sync
-- babel
+- babel (ES6)
 - nunjucks
 - Build task
 
